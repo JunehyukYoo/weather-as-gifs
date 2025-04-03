@@ -1,7 +1,7 @@
 // API KEYS FOR PUBLIC USE
-const GOOGLE_API_KEY = 'AIzaSyBEFZuY_nCL1F7-GjUzIZ7aO357GUcu3-w';
-const VISUAL_CROSSING_API_KEY = 'WCJHZ5QDW8NJ4BZWT4257ZV7J';
-const GIPHY_API_KEY = 'RsWTGGUfZP9MqFwpTJJ7dm5cik2VvuLA';
+const GOOGLE_API_KEY = 'YOUR API KEY HERE';
+const VISUAL_CROSSING_API_KEY = 'YOUR API KEY HERE';
+const GIPHY_API_KEY = 'YOUR API KEY HERE';
 
 // Initializes website by displaying weather for current location
 // If client location cannot be determined, defaults to Chicago.
