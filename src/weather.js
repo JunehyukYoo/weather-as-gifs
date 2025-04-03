@@ -1,18 +1,59 @@
+// API KEYS FOR PUBLIC USE
+const GOOGLE_API_KEY = 'AIzaSyBEFZuY_nCL1F7-GjUzIZ7aO357GUcu3-w';
+const VISUAL_CROSSING_API_KEY = 'WCJHZ5QDW8NJ4BZWT4257ZV7J';
+const GIPHY_API_KEY = 'RsWTGGUfZP9MqFwpTJJ7dm5cik2VvuLA';
+
+// Initializes website by displaying weather for current location
+// If client location cannot be determined, defaults to Chicago.
+export function init() {
+    displayForm();
+    getGeolocation().then(result => {
+        const { location: { lat, lng } } = result;
+        return reverseGeocode(lat, lng);
+    }).then(city => {
+        if (city) {
+            showWeather(city);
+        } else {
+            console.warn('City not found via reverse geocoding. Defaulting to Chicago.');
+            showWeather('Chicago');
+        }
+    }).catch((error) => {
+        console.log(error);
+        console.log('Google API error. Defaulting to Chicago.');
+        showWeather('Chicago');
+    });
+}
+
+// Google geolocation API to get client location coordinates
+async function getGeolocation() {
+    const response = await fetch(`https://www.googleapis.com/geolocation/v1/geolocate?key=${GOOGLE_API_KEY}`, {method: 'POST'});
+    return response.json();
+}
+
+// Google geocode API to get city name from coordinates using reverse geocode
+async function reverseGeocode(lat, lng) {
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=${GOOGLE_API_KEY}`, {mode: 'cors'});
+    const result = await response.json();
+    const city = result.results[0].address_components.find(component => component.types.includes('locality'));
+    return city ? city.long_name : null;
+}
+
+
 // Show weather 
-export async function showWeather(city) {
+async function showWeather(city) {
     const container = document.querySelector(".container");
     container.innerHTML = '';
     container.textContent = '';
     // Fetches weather information from VisualCrossing API
     async function getWeather(city) {
-        const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?key=WCJHZ5QDW8NJ4BZWT4257ZV7J`;
+        const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?key=${VISUAL_CROSSING_API_KEY}`;
         const response = await fetch(url, { mode: 'cors'});
         const result = await response.json();
         return result;
     }
     try {
         const h2 = document.createElement('h2');
-        h2.setAttribute('class', 'fontdiner-swanky-regular city-title');
+        h2.setAttribute('class', 'city-title');
         h2.textContent = capitalizeWords(city.trim());
         container.appendChild(h2);
 
@@ -28,11 +69,11 @@ export async function showWeather(city) {
 }
 
 // Display form
-export function displayForm() {
+function displayForm() {
     const container = document.querySelector(".form");
     const form = document.createElement("form");
     form.innerHTML = `<label for="city">Which city would you like to see the temperature of? </label>
-                      <input name="city" id="city">
+                      <input name="city" id="city" required>
                       <button type="submit">Submit</button>`;
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -54,15 +95,15 @@ async function createWeatherItems(currentConditions) {
     weatherContent.classList.add('weather-content');
 
     const conditionsItem = document.createElement("div");
-    conditionsItem.classList.add("item");
+    conditionsItem.setAttribute('class', 'item');
     conditionsItem.textContent = `Condition(s): ${conditions}`;
     const conditionsImg = document.createElement("img");
     conditionsImg.src = await getImg(`${conditions}`);
     conditionsItem.appendChild(conditionsImg);
 
     const datetimeItem = document.createElement("div");
-    datetimeItem.classList.add("item");
-    datetimeItem.textContent = `Current time: ${datetime.slice(0, datetime.lastIndexOf(':'))}`;
+    datetimeItem.setAttribute('class', 'item');
+    datetimeItem.textContent = `Updated: ${datetime.slice(0, datetime.lastIndexOf(':'))}`;
     const datetimeImg = document.createElement('img');
     const hour = parseInt(datetime.slice(0, datetime.indexOf(':')));
     if (hour < 6) {
@@ -79,10 +120,9 @@ async function createWeatherItems(currentConditions) {
     datetimeItem.appendChild(datetimeImg);
 
     const tempItem = document.createElement("div");
-    tempItem.classList.add("item");
+    tempItem.setAttribute('class', 'item');
     tempItem.textContent = `Currently ${temp}\u00B0C. Feels like ${feelslike}\u00B0C`;
     const tempImg = document.createElement("img");
-    console.log(`Feels like is ${feelslike}`);
     if (feelslike < -10) {
         tempImg.src = await getImg('freezing');
     } else if (feelslike < 0) {
@@ -99,7 +139,7 @@ async function createWeatherItems(currentConditions) {
     tempItem.appendChild(tempImg);
 
     const uvItem = document.createElement('div');
-    uvItem.classList.add("item");
+    uvItem.setAttribute('class', 'item');
     uvItem.textContent = `UV index: ${uvindex}`;
     const uvImg = document.createElement('img');
     if (uvindex < 3) {
@@ -114,16 +154,19 @@ async function createWeatherItems(currentConditions) {
     uvItem.appendChild(uvImg);
 
     const windspeedItem = document.createElement('div');
-    windspeedItem.classList.add("item");
-    windspeedItem.textContent = `Windspeed: ${windspeed}km/h`;
+    windspeedItem.setAttribute('class', 'item');
     const windspeedImg = document.createElement("img");
     if (windspeed < 20) {
+        windspeedItem.textContent = `Windspeed: Calm at ${windspeed}km/h`;
         windspeedImg.src = await getImg('not that windy');
     } else if (windspeed < 50) {
+        windspeedItem.textContent = `Windspeed: Breezy at ${windspeed}km/h`;
         windspeedImg.src = await getImg('breezy');
     } else if (windspeed < 90) {
+        windspeedItem.textContent = `Windspeed: Windy at ${windspeed}km/h`;
         windspeedImg.src = await getImg('windy');
     } else {
+        windspeedItem.textContent = `Windspeed: Dangerous at ${windspeed}km/h`;
         windspeedImg.src = await getImg('tornado');
     }
     windspeedItem.appendChild(windspeedImg);
@@ -139,7 +182,7 @@ async function createWeatherItems(currentConditions) {
 
 // Fetches GIF with query from Giphy API
 async function getImg(query) {
-    const response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=RsWTGGUfZP9MqFwpTJJ7dm5cik2VvuLA&s=${query}`, { mode: 'cors' });
+    const response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=${GIPHY_API_KEY}&s=${query}`, { mode: 'cors' });
     const result = await response.json();
     return result.data.images.original.url;
 }
@@ -154,7 +197,7 @@ function mphToKph(mph) {
     return parseFloat((mph * 1.60934).toPrecision(4));
 }
 
-
+// Capitalizes city name properly
 function capitalizeWords(str) {
     return str.toLowerCase().split(' ').map(word => {
       return word.charAt(0).toUpperCase() + word.slice(1);
