@@ -62,7 +62,18 @@ https://junehyukyoo.github.io/weather-as-gifs/
 
 3. **API Keys:**
 
-   This project provides some public use API keys. Please do not abuse requests as there are a limited amount I get per hour 😢. Otherwise, you can replace my API keys with your own.
+   - Obtain an API key for the Visual Crossing weather API.
+   - Obtain an API key for the Giphy API.
+   - Obtain an API key for Google Maps APIs (enable both Geolocation and Geocoding).
+
+   Enter your API keys at the top of `weather.js`:
+
+   ```javascript
+   // weather.js
+   const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY';
+   const VISUAL_CROSSING_API_KEY = 'YOUR_VISUAL_CROSSING_API_KEY';
+   const GIPHY_API_KEY = 'YOUR_GIPHY_API_KEY';
+   ```
 
 
 4. **Run the Application:**
