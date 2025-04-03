@@ -1,94 +1,70 @@
-# Webpack Template Starter
+# Weather as GIFs
 
-This repository provides a clean and modular setup for modern JavaScript projects using **Webpack**. It supports development and production builds, and includes support for deploying to GitHub Pages via `dist/`.
+## Overview
 
-## 📁 Project Structure
+This project is a weather dashboard that displays the current weather conditions for a user-specified city with GIFs! It automatically attempts to display the weather for the user's current location using Google Maps APIs (Geolocation and Geocoding). If location access is denied or an error occurs, it defaults to displaying weather information for Chicago. The application retrieves weather data from the Visual Crossing API and supplements the visual experience with relevant GIFs fetched from the Giphy API.
 
-```
-.
-├── dist/                  # Compiled production files (generated)
-├── node_modules/          # Installed dependencies
-├── src/                   # Source code (HTML, JS, CSS)
-│   └── template.html      # HTML template used by HtmlWebpackPlugin
-├── .gitignore             # Ignores node_modules and dist from Git
-├── package.json           # Project metadata and scripts
-├── webpack.common.js      # Shared Webpack config
-├── webpack.dev.js         # Dev-specific Webpack config
-├── webpack.prod.js        # Prod-specific Webpack config
-├── README.md              # You're here!
-```
+## Features
 
-## ⚙️ Scripts
+- **Dynamic Weather Display:**  
+  Retrieves and displays current weather conditions including temperature, "feels like" temperature, UV index, and windspeed.
+  
+- **Location Detection:**  
+  Uses the Google Geolocation API to determine the user's coordinates, and the Google Geocoding API to translate these into a city name. If the location access is denied or fails, it defaults to Chicago.
 
-Defined in `package.json`:
+- **Fun Visuals:**  
+  Enhances weather information with contextual GIFs obtained via the Giphy API based on the current weather conditions.
 
-```json
-"scripts": {
-  "build": "webpack --config webpack.prod.js",
-  "dev": "webpack serve --open --config webpack.dev.js",
-  "deploy": "git subtree push --prefix dist origin gh-pages"
-}
-```
+## Skills and Techniques
 
-### 🔧 Script Breakdown:
+- **Asynchronous Programming:**  
+  This project makes extensive use of asynchronous functions to handle API calls. Both **promise chaining** and **async/await** methods are employed, demonstrating the ability to manage asynchronous logic in multiple ways:
+  
+  - **Promise Chaining:**  
+    Used in parts of the project to handle API responses and errors in a concise, readable manner.
+  
+  - **Async/Await:**  
+    Provides a more synchronous-style code flow for handling asynchronous operations, making it easier to read and maintain. This approach is used in fetching weather data, processing user input, and loading GIF images.
 
-| Command         | Description                                                                 |
-|----------------|-----------------------------------------------------------------------------|
-| `npm run build` | Builds the project for production. Output goes to the `/dist` folder.      |
-| `npm run dev`   | Runs the development server at `http://localhost:8080/` and opens browser. |
-| `npm run deploy`| Deploys `/dist` to the `gh-pages` branch using Git Subtree.                |
+- **API Integration:**  
+  The project integrates several APIs:
+  - **Google Geolocation API:**  
+    Determines the user's current position.
+  - **Google Geocoding API:**  
+    Converts latitude and longitude into a city name.
+  - **Visual Crossing API:**  
+    Retrieves detailed weather data for a specified city.
+  - **Giphy API:**  
+    Fetches GIFs that visually represent the current weather conditions.
 
-## ✅ Setup Instructions
+- **DOM Manipulation:**  
+  The project dynamically creates and styles HTML elements to display weather information in a user-friendly format.
 
-1. **Clone the repo:**
+- **Modern JavaScript Practices:**  
+  Utilizes ES6 modules, template literals, arrow functions, and destructuring assignments to write clean, efficient code.
 
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
-   ```
+## Setup and Usage
 
-2. **Install dependencies:**
+1. **Clone the Repository:**
 
    ```bash
-   npm install
+   git clone https://github.com/JunehyukYoo/weather-as-gifs.git
+   cd weather-as-gifs
    ```
 
-3. **Start development server:**
+2. **Install Dependencies:**
 
-   ```bash
-   npm run dev
-   ```
+   This project primarily uses vanilla JavaScript, so no additional packages are required unless you choose to integrate a bundler or development server.
 
-4. **Build for production:**
+3. **API Keys:**
 
-   ```bash
-   npm run build
-   ```
+   This project provides some public use API keys. Please do not abuse requests as there are a limited amount I get per hour 😢. Otherwise, you can replace my API keys with your own.
 
-5. **Deploy to GitHub Pages (optional):**
 
-   Make sure your repo has a `gh-pages` branch and run:
+4. **Run the Application:**
 
-   ```bash
-   npm run deploy
-   ```
+   Open `index.html` in your browser. The application will attempt to detect your location and display the weather accordingly. If location access is not granted, it defaults to Chicago. You can alternatively run scripts defined in my webpack-template repository. 
 
-## 📦 What’s Included
+## Conclusion
 
-- ✅ Webpack 5
-- ✅ Dev server with live reload
-- ✅ Source maps
-- ✅ Production optimization (minified JS/CSS)
-- ✅ HTML template integration via `HtmlWebpackPlugin`
-- ✅ GitHub Pages deployment via `subtree push`
-- ✅ `.gitignore` set up for `node_modules` and `dist`
-
-## 🧠 Notes
-
-- The actual source code goes in the `src/` folder.
-- You can modify `src/template.html` and `src/index.js` to kick off your project.
-- Use the `webpack.common.js`, `webpack.dev.js`, and `webpack.prod.js` files to customize your build process.
-
-## 📝 License
-
-This project is a boilerplate/template and is free to use under the [MIT License](LICENSE).
+This project highlights advanced asynchronous programming techniques in JavaScript, showcasing both promise chaining and async/await patterns. It also demonstrates proficiency in integrating multiple third-party APIs to build a rich, interactive user experience. Whether fetching weather data, handling user permissions, or displaying contextual GIFs, this dashboard combines modern web development practices with real-world API integrations to deliver a seamless weather application.
