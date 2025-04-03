@@ -1,7 +1,7 @@
 // index.js (entry point)
 
 import "./styles.css"
-import { getWeather, showWeather, displayForm } from "./weather";
+import { getWeather, displayForm } from "./weather";
 
 displayForm();
 const container = document.querySelector(".container");
