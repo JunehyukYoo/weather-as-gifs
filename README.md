@@ -4,6 +4,10 @@
 
 This project is a weather dashboard that displays the current weather conditions for a user-specified city with GIFs! It automatically attempts to display the weather for the user's current location using Google Maps APIs (Geolocation and Geocoding). If location access is denied or an error occurs, it defaults to displaying weather information for Chicago. The application retrieves weather data from the Visual Crossing API and supplements the visual experience with relevant GIFs fetched from the Giphy API.
 
+## Demo Website
+
+https://junehyukyoo.github.io/weather-as-gifs/
+
 ## Features
 
 - **Dynamic Weather Display:**  
